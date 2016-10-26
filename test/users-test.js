@@ -53,5 +53,8 @@ test('GET /:username', async t => {
   delete user.email
   delete user.password
 
+  delete body.avatar
+  delete body.pictures
+
   t.deepEqual(body, user)
 })
