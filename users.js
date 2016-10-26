@@ -3,6 +3,7 @@
 import { send, json } from 'micro'
 import HttpHash from 'http-hash'
 import Db from 'platzigram-db'
+import gravatar from 'gravatar'
 import config from './config'
 import DbStub from './test/stub/db'
 
@@ -32,6 +33,10 @@ hash.set('GET /:username', async function getUser (req, res, params) {
   await db.connect()
   let user = await db.getUser(username)
   await db.disconnect()
+
+  user.avatar = gravatar.url(user.email)
+  let images = await db.getImagesByUser(username)
+  user.pictures = images
 
   delete user.email
   delete user.password
